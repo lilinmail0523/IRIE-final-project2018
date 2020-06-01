@@ -1,18 +1,11 @@
 import torch
+import numpy as np
+from gensim.models import KeyedVectors
+
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
-"""
-class dimmen_reduction(nn.Module):
-    def __init__(self, embedd_dim, output_dim):
-        super(dimmen_reduction, self).__init__()
-        self.fc = nn.Linear(in_features = embedd_dim, out_features =output_dim)
-
-    def forward(self, x):
-        x = self.fc(x)
-        return x
-"""
 
 
 
@@ -57,3 +50,4 @@ class classification_net(torch.nn.Module):
 
         x = self.softmax(x)
         return x
+

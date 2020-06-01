@@ -16,9 +16,8 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 if __name__ == '__main__':
     batch_size = 128
     epoch = 100
-    word_embedding_dimension = 300
-
-    POS_Node_dimen = 30
+    embedding_dimension = 300
+    Total_dimension = 900
     classes = 3
     f1MAX = 0
 
@@ -27,7 +26,7 @@ if __name__ == '__main__':
     reference: https://stackoverflow.com/questions/50544730/how-do-i-split-a-custom-dataset-into-training-and-test-datasets
     16959 = len
     """
-    data_loader = nlpdataloader('train_processed.json')
+    data_loader = nlpdataloader('Processtrain.json')
 
     train_size = int(0.8 * len(data_loader))
     val_size = len(data_loader) - train_size
@@ -39,13 +38,12 @@ if __name__ == '__main__':
 
 
 
-    CNN_classification = classification_net((word_embedding_dimension)*2, classes).to(device)
+    CNN_classification = classification_net((Total_dimension)*2, classes).to(device)
     #dimension_reduc = dimmen_reduction(word_embedding_dimension, word_output_dimension).to(device)
 
 
     loss_criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(params=CNN_classification.parameters(), lr=0.005, weight_decay = 1e-5)
-
 
 
 
@@ -62,6 +60,7 @@ if __name__ == '__main__':
         CNN_classification.train()
 
         for i, (text1, text2, label) in enumerate(Train_Data):
+
 
             output = CNN_classification(text1, text2)
 

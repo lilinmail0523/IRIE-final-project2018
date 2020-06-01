@@ -12,16 +12,16 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
 if __name__ == '__main__':
-    data_dir = 'test_processed.json'
+    data_dir = 'Processtest.json'
 
     batch_size = 128
-    word_embedding_dimension = 300
-    POS_Node_dimen = 30
+    embedding_dimension = 300
+    Total_dimension = 900
     classes = 3
 
 
     #load model
-    CNN_classification = classification_net((word_embedding_dimension)*2, classes).to(device)
+    CNN_classification = classification_net((Total_dimension)*2, classes).to(device)
     model_state_dict = torch.load("SavedModel.tar")
     CNN_classification.load_state_dict(model_state_dict['encoder'])
     print("[Load Model Succeed!]")
@@ -32,6 +32,7 @@ if __name__ == '__main__':
 
     start = time.time()
     data_loader = get_loader(data_dir, batch_size)
+    print(len(data_loader))
     loss_total = 0
     y_pred = []
     y_true = []
