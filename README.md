@@ -3,8 +3,7 @@
 Textual analogy parsing (TAP) is a task of identifying the analogical relations between texts. Given a sentence which contains a group of analogous facts, the results should represent the similiarity and difference of the given pairs of points in the texts.
 
 For further information of textual analogy parsing:
- - [Textual Analogy Parsing: What's Shared and What's Compared among Analogous Facts](https://nlp.stanford.edu/pubs/lamm2018analogies.pdf)
- - [Their github](https://github.com/mrlamm/textual-analogy-parsing)
+ - [Textual Analogy Parsing: What's Shared and What's Compared among Analogous Facts](https://nlp.stanford.edu/pubs/lamm2018analogies.pdf) [Github](https://github.com/mrlamm/textual-analogy-parsing)
 
 # Data
  * Tokens: Use the tokens order to match **index** in Nodes and Edges
@@ -16,7 +15,7 @@ For further information of textual analogy parsing:
 # Evaluation
  *  We use F1 to evaluate the performance
 
-For further information of the project: final.pdf
+For further information of the project: [final.pdf](https://github.com/lilinmail0523/IR-final-project2019-relation-extraction/blob/master/final.pdf)
 
 # Word Embedding using pretrained model
  * FastText: [wiki-news-300d-1M.vec](https://fasttext.cc/docs/en/english-vectors.html)
