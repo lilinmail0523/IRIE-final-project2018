@@ -1,56 +1,46 @@
 # IRIE final project: Relation Extraction 
-Textual analogy parsing (TAP) is a task of identifying the analogical relations between texts. Given a sentence which contains a group of analogous facts, the results should represent the similiarity and difference of the given pairs of points in the texts.
+The aim of relation extraction is to identify the semantic relations in the articles like “at”, “role”, “social” and so on, and it could process the unstructured texts into organized information. In this project, the task of Textual Analogy Parsing was to find the analogous facts among the entities from the Wall Street Journals. The supervised method was used by extracting features including word embedding, part-of-speech (POS), named entity recognition (NER), Position feature (PF), and then applying SVM to acquire the relations. The evaluation was done by F1-score.
 
 For further information of textual analogy parsing:
  - [Textual Analogy Parsing: What's Shared and What's Compared among Analogous Facts](https://nlp.stanford.edu/pubs/lamm2018analogies.pdf) [[Github](https://github.com/mrlamm/textual-analogy-parsing)]
 
 # Data
- * Tokens: Use the tokens order to match **index** in Nodes and Edges
+ * Tokens: Using the tokens order to match **index** in Nodes and Edges
  * Nodes: The type of the token. (18 kinds of labels)
- * Edges: The relation between tokens/Nodes.
+ * Edges: The relation between tokens/Nodes including fact, equivalence, and analogy.
 # Task: Edge Prediction
- 1. Given Tokens **without Nodes information**, predict the edge of given pair.
- 2. Given Tokens and Nodes information, predict the edge of given pair.
-# Evaluation
- *  We use F1 to evaluate the performance
-
-For further information of the project: [final.pdf](https://github.com/lilinmail0523/IR-final-project2019-relation-extraction/blob/master/final.pdf)
-
-# Word Embedding using pretrained model
- * FastText: [wiki-news-300d-1M.vec](https://fasttext.cc/docs/en/english-vectors.html)
-
-# Data preprocessing:
- * Nodes: Node features were transformed to **one-hot encoding** and word embedding by FastText pretrained model.
- * POS: Part of Speech, fetched by nltk pos_tag (35 kinds of labels) function from **tokens**,  were transformed to **one-hot encoding** and **word embedding** by FastText pretrained model.
- * Word Vectors: Word vectors were fetch by FastText pretrained model from tokens.
-
-# Model
-
- * 1-layer convolusiton
-
-    ![1-layer convolution](https://github.com/lilinmail0523/IR-final-project2019-relation-extraction/blob/master/1-layer-convolution.png)
-    
-    Max: Max over channel, to determine the useful feature in each dimension
-    
-    Max over channel reference: [Relation Classiﬁcation via Convolutional Deep Neural Network](https://www.aclweb.org/anthology/C14-1220.pdf)
-    | Hyper- parameters | Oprimizer  |Learning rate | Weight decay |Loss function| Epoch | Batch size |
-    |---|---|---|---| ---| ---|---|
-    | Value  | Adam  | 0.01 |0.00001 |Cross Entropy | 100 | 128 |
+ 1. Given Tokens and Nodes information, predict the edge of given pair.
+ 2. Given Tokens **without Nodes information**, predict the edge of given pair.
 
 
- * SVM (Multiclass by [OneVsRestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsRestClassifier.html))
-     
+# Method:
+With supervised learning, first, the data were processed into POS, NER, PF, and WE features. The POS and NER features were presented by one-hot encoding, and WE was fetched from [Stanford GloVe twitter 100d model](https://nlp.stanford.edu/projects/glove/). Second, SVM was used to deal with classification of relationships between tokens. 
+  | Features  | Description |
+  |---|---|
+  | Node | The Quantitative Semantic Role Label (QSRL) given from task|
+  | WE (Word embedding) | Word embedding extracted from GloVe twitter 100d|
+  | Part-of-speech (POS) | Part of speech of each word|
+  | Name entity recognition (NER) | Named entities classified into pre-define categories|
+  | Position feature (PF)| Distance between two words|
+  
 # Results
-1. One hot encoding using SVM
+1. Task one: with node features 
 
-    |   | Node  | POS  |
-    |---|---|---|
-    | Test f1 score  | 0.928  | 0.867  |
-2. Word embedding using convolution and SVM
+    |   | Node  | Node, WE, POS, PF  | WE, POS, NER, PF|
+    |---|---|---|---|
+    | Test f1 score  | 0.969  | 0.927  | 0.904 |
+ 
+In the fist task, the results showed that node features had higher performance than the others, and the scores decreased when node features were concatenated with others. Node features were expressed by Quantitative Semantic Role Labels (QSRL) which provided tokens with roles, including quantitative language and emphasizes context. Compared to POS and word embedding, the QSRL offered more specific information that can divide data into several categories. For example, The value, time, reference_time labels in QSRL could differentiate the numbers which were all abbreviated as “CD” in POS method.  
+    
+2. Task two: without node features
 
-    | Test f1 score  | Node  |  POS | Word  | Node+POS+Word  |
+    | Test f1 score  | WE  |  POS | POS, NER  | WE, POS, NER  |
     |---|---|---|---|---|
-    | SVM  | 0.815  | 0.784  | 0.723  | 0.813  |
-    | convolution  | 0.871  | 0.815  | 0.865  | 0.874  |
+    | Without PF | 0.886  | 0.792  | 0.790  | 0.884  |
+    | With PF | 0.898  | 0.856  | 0.857  | 0.901  |
 
-    Node+POS+Word vectors were combined by concatenation. 
+The comparison of features in the second task indicated that merged features achieved the highest performance which took advantage of word meanings and part-of-speech. The fact edge was built from values and the relation of analogy and equivalence needed fact edge information to establish. The word and POS features led to better performance because word embedding and POS features could tell difference between value and non-value entities, while NER could not recognize the numbers in the text. The features concatenated with PF improved performance because the equivalence and analogy edge usually crossed the sentence which had the larger distance, while the fact edge was bounded in one sentence with small distance.
+
+# Reference
+[Final project](https://github.com/lilinmail0523/IRIE-final-project2018/blob/master/final.pdf)
+[Textual Analogy Parsing: What's Shared and What's Compared among Analogous Facts, Lamm *et al.*, 2018.](https://nlp.stanford.edu/pubs/lamm2018analogies.pdf)
