@@ -27,7 +27,7 @@ With supervised learning, first, the data were processed into POS, NER, PF, and 
     |---|---|---|---|
     | Test f1 score  | 0.969  | 0.927  | 0.904 |
  
-In the fist task, the results showed that node features had higher performance than the others, and the scores decreased when node features were concatenated with others. Node features were expressed by Quantitative Semantic Role Labels (QSRL) which provided tokens with roles, including quantitative language and emphasizes context. Compared to POS and word embedding, the QSRL offered more specific information that can divide data into several categories. For example, The value, time, reference_time labels in QSRL could differentiate the numbers which were all abbreviated as “CD” in POS method.  
+In the fist task, the results showed that node features had higher performance than the others, and the scores decreased when node features were concatenated with others. Node features were expressed by Quantitative Semantic Role Labels (QSRL) which provided tokens with roles, including quantitative language and emphasizes context. Compared to POS and WE, the QSRL offered more specific information that can divide data into several categories. For example, The value, time, reference_time labels in QSRL could differentiate the numbers which were all abbreviated as “CD” in POS method.  
     
 2. Task two: without node features
 
@@ -36,7 +36,7 @@ In the fist task, the results showed that node features had higher performance t
     | Without PF | 0.886  | 0.792  | 0.790  | 0.884  |
     | With PF | 0.898  | 0.856  | 0.857  | 0.901  |
 
-The comparison of features in the second task indicated that merged features achieved the highest performance which took advantage of word meanings and part-of-speech. The fact edge was built from values and the relation of analogy and equivalence needed fact edge information to establish. The word and POS features led to better performance because word embedding and POS features could tell difference between value and non-value entities, while NER could not recognize the numbers in the text. The features concatenated with PF improved performance because the equivalence and analogy edge usually crossed the sentence which had the larger distance, while the fact edge was bounded in one sentence with small distance.
+The comparison of features in the second task indicated that merged features achieved the highest performance which took advantage of word meanings and part-of-speech. The fact edge was built from values and the relation of analogy and equivalence needed fact edge information to establish. The WE and POS features led to better performance because word meanings and part-of-speech could tell difference between value and non-value entities, while NER could not recognize the numbers in the text. The features concatenated with PF improved performance because the equivalence and analogy edge usually crossed the sentence which had the larger distance, while the fact edge was bounded in one sentence with small distance.
 
 # Reference
 
